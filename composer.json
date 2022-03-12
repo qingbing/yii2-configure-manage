@@ -1,0 +1,39 @@
+{
+  "name": "qingbing/yii2-configure-manage",
+  "description": "yii2配置组件，包含：网站配置，表头配置，表单配置等配置功能，主要用于程序设计开发使用时操作配置db",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "php",
+    "yii",
+    "yii2",
+    "configure",
+    "configure-logic",
+    "yii2-configure-logic"
+  ],
+  "homepage": "http://www.phpcorner.net",
+  "authors": [
+    {
+      "name": "qingbing",
+      "email": "780042175@qq.com"
+    }
+  ],
+  "require": {
+    "ext-json": "*",
+    "ext-openssl": "*",
+    "ext-curl": "*",
+    "php": "^7.1.0",
+    "yiisoft/yii2": "~2.0.14",
+    "yiisoft/yii2-bootstrap": "~2.0.0",
+    "yiisoft/yii2-httpclient": "^2.0",
+    "yiisoft/yii2-queue": "^2.3",
+    "yiisoft/yii2-redis": "^2.0",
+    "qingbing/zf-helper": "^1.0",
+    "qingbing/yii2-helper": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "YiiConfigureManage\\": "src"
+    }
+  }
+}
