@@ -35,13 +35,8 @@ class ReplaceSettingService extends SuperService implements IReplaceSettingServi
     {
         $query = ReplaceSetting::find()
             ->orderBy('sort_order ASC');
-        if ($this->isSuper) {
-            // 等于查询
-            $this->attributeWhere($query, $params, 'is_open');
-        } else {
-            // 非超管人员，只能查看开放配置
-            $query->andWhere(['=', 'is_open', IS_YES]);
-        }
+        // 等于查询
+        $this->attributeWhere($query, $params, 'is_open');
         // like 查询
         $this->likeWhere($query, $params, ['code', 'name']);
         return Pager::getInstance()->pagination($query, $params['pageNo'], $params['pageSize']);
@@ -125,9 +120,6 @@ class ReplaceSettingService extends SuperService implements IReplaceSettingServi
     public function setDefault(array $params = []): bool
     {
         $model = $this->getModel($params);
-        if (!$this->isSuper && !$model->is_open) {
-            throw new ForbiddenHttpException("您无权操作该配置");
-        }
         $model->content = NULL;
         return $model->saveOrException();
     }
@@ -145,9 +137,6 @@ class ReplaceSettingService extends SuperService implements IReplaceSettingServi
                 "name",
             ])
             ->orderBy('sort_order ASC');
-        if (!$this->isSuper) {
-            $query->andWhere(['=', 'is_open', IS_YES]);
-        }
         return $query->asArray()
             ->all();
     }
@@ -164,9 +153,6 @@ class ReplaceSettingService extends SuperService implements IReplaceSettingServi
     public function saveContent(array $params = []): bool
     {
         $model = $this->getModel($params);
-        if (!$this->isSuper && !$model->is_open) {
-            throw new ForbiddenHttpException("您无权操作该配置");
-        }
         $model->content = $params['content'];
         return $model->saveOrException();
     }

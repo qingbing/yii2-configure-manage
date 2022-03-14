@@ -5,31 +5,32 @@
  * @copyright   Chengdu Qb Technology Co., Ltd.
  */
 
-namespace YiiConfigureManage\block\controllers;
+namespace YiiConfigureManage\form\controllers;
 
 
 use Exception;
-use YiiConfigureManage\block\interfaces\IBlockOptionService;
-use YiiConfigureManage\block\models\BlockCategory;
-use YiiConfigureManage\block\models\BlockOption;
-use YiiConfigureManage\block\services\BlockOptionService;
+use YiiConfigureManage\form\interfaces\IFormOptionService;
+use YiiConfigureManage\form\models\FormCategory;
+use YiiConfigureManage\form\models\FormOption;
+use YiiConfigureManage\form\services\FormOptionService;
 use YiiHelper\abstracts\RestController;
+use YiiHelper\validators\JsonValidator;
 
 /**
- * 控制器: 区块选项管理
+ * 控制器: 表单选项管理
  *
- * Class BlockOptionController
- * @package YiiConfigureManage\block\controllers
+ * Class FormOptionController
+ * @package YiiConfigureManage\form\controllers
  *
- * @property-read IBlockOptionService $service
+ * @property-read IFormOptionService $service
  */
-class BlockOptionController extends RestController
+class FormOptionController extends RestController
 {
-    public $serviceInterface = IBlockOptionService::class;
-    public $serviceClass     = BlockOptionService::class;
+    public $serviceInterface = IFormOptionService::class;
+    public $serviceClass     = FormOptionService::class;
 
     /**
-     * 区块选项列表
+     * 表单选项列表
      *
      * @return array
      * @throws Exception
@@ -39,16 +40,16 @@ class BlockOptionController extends RestController
         // 参数验证和获取
         $params = $this->validateParams([
             [['key'], 'required'],
-            ['key', 'exist', 'label' => '引用标记', 'targetClass' => BlockCategory::class, 'targetAttribute' => 'key'],
+            ['key', 'exist', 'label' => '表单标记', 'targetClass' => FormCategory::class, 'targetAttribute' => 'key'],
         ]);
         // 业务处理
         $res = $this->service->list($params);
         // 渲染结果
-        return $this->success($res, '区块选项列表');
+        return $this->success($res, '表单选项列表');
     }
 
     /**
-     * 添加区块选项
+     * 添加表单选项
      *
      * @return array
      * @throws Exception
@@ -59,24 +60,28 @@ class BlockOptionController extends RestController
         $key = $this->getParam('key');
         // 参数验证和获取
         $params = $this->validateParams([
-            [['key', 'label', 'sort_order', 'is_enable'], 'required'],
-            ['key', 'exist', 'label' => '引用标记', 'targetClass' => BlockCategory::class, 'targetAttribute' => 'key'],
-            ['label', 'unique', 'label' => '选项名称', 'targetClass' => BlockOption::class, 'targetAttribute' => 'label', 'filter' => ['key' => $key]],
-            ['link', 'string', 'label' => '链接地址'],
-            ['src', 'string', 'label' => '图片地址'],
+            [['key', 'field', 'label', 'input_type', 'sort_order', 'is_required', 'is_enable'], 'required'],
+            ['key', 'exist', 'label' => '表单标记', 'targetClass' => FormCategory::class, 'targetAttribute' => 'key'],
+            ['field', 'unique', 'label' => '选项字段', 'targetClass' => FormOption::class, 'targetAttribute' => 'field', 'filter' => ['key' => $key]],
+            ['label', 'unique', 'label' => '选项名称', 'targetClass' => FormOption::class, 'targetAttribute' => 'label', 'filter' => ['key' => $key]],
+            ['input_type', 'in', 'label' => '对齐方式', 'range' => array_keys(FormOption::inputTypes())],
+            ['default', 'string', 'label' => '默认值'],
+            ['description', 'string', 'label' => '表单选项描述'],
+            ['required_msg', 'string', 'label' => '必填提示'],
             ['sort_order', 'integer', 'label' => '排序'],
+            ['is_required', 'boolean', 'label' => '必填'],
             ['is_enable', 'boolean', 'label' => '是否开启'],
-            ['is_blank', 'boolean', 'label' => '新开窗口'],
-            ['description', 'string', 'label' => '选项描述'],
+            ['exts', JsonValidator::class, 'label' => '扩展参数'],
+            ['rules', JsonValidator::class, 'label' => '验证规则'],
         ]);
         // 业务处理
         $res = $this->service->add($params);
         // 渲染结果
-        return $this->success($res, '添加区块选项成功');
+        return $this->success($res, '添加表单选项成功');
     }
 
     /**
-     * 编辑区块选项
+     * 编辑表单选项
      *
      * @return array
      * @throws Exception
@@ -89,13 +94,13 @@ class BlockOptionController extends RestController
         // 参数验证和获取
         $params = $this->validateParams([
             [['id', 'key'], 'required'], // 必填做这么少为了table-cell-edit
-            ['id', 'exist', 'label' => 'ID', 'targetClass' => BlockOption::class, 'targetAttribute' => 'id'],
-            ['key', 'exist', 'label' => '区块标记', 'targetClass' => BlockCategory::class, 'targetAttribute' => 'key'],
+            ['id', 'exist', 'label' => 'ID', 'targetClass' => FormOption::class, 'targetAttribute' => 'id'],
+            ['key', 'exist', 'label' => '表单标记', 'targetClass' => FormCategory::class, 'targetAttribute' => 'key'],
             [
                 'label',
                 'unique',
                 'label'           => '选项名称',
-                'targetClass'     => BlockOption::class,
+                'targetClass'     => FormOption::class,
                 'targetAttribute' => 'label',
                 'filter'          => [
                     'and',
@@ -103,21 +108,23 @@ class BlockOptionController extends RestController
                     ['!=', 'id', $id],
                 ]
             ],
-            ['link', 'string', 'label' => '链接地址'],
-            ['src', 'string', 'label' => '图片地址'],
+            ['default', 'string', 'label' => '默认值'],
+            ['description', 'string', 'label' => '表单选项描述'],
+            ['required_msg', 'string', 'label' => '必填提示'],
             ['sort_order', 'integer', 'label' => '排序'],
+            ['is_required', 'boolean', 'label' => '必填'],
             ['is_enable', 'boolean', 'label' => '是否开启'],
-            ['is_blank', 'boolean', 'label' => '新开窗口'],
-            ['description', 'string', 'label' => '选项描述'],
+            ['exts', JsonValidator::class, 'label' => '扩展参数'],
+            ['rules', JsonValidator::class, 'label' => '验证规则'],
         ]);
         // 业务处理
         $res = $this->service->edit($params);
         // 渲染结果
-        return $this->success($res, '编辑区块选项成功');
+        return $this->success($res, '编辑表单选项成功');
     }
 
     /**
-     * 删除区块选项
+     * 删除表单选项
      *
      * @return array
      * @throws Exception
@@ -127,17 +134,17 @@ class BlockOptionController extends RestController
         // 参数验证和获取
         $params = $this->validateParams([
             [['key', 'id'], 'required'],
-            ['key', 'exist', 'label' => '区块标记', 'targetClass' => BlockCategory::class, 'targetAttribute' => 'key'],
-            ['id', 'exist', 'label' => 'ID', 'targetClass' => BlockOption::class, 'targetAttribute' => 'id'],
+            ['key', 'exist', 'label' => '表单标记', 'targetClass' => FormCategory::class, 'targetAttribute' => 'key'],
+            ['id', 'exist', 'label' => 'ID', 'targetClass' => FormOption::class, 'targetAttribute' => 'id'],
         ]);
         // 业务处理
         $res = $this->service->del($params);
         // 渲染结果
-        return $this->success($res, '删除区块选项成功');
+        return $this->success($res, '删除表单选项成功');
     }
 
     /**
-     * 查看区块选项详情
+     * 查看表单选项详情
      *
      * @return array
      * @throws Exception
@@ -147,8 +154,8 @@ class BlockOptionController extends RestController
         // 参数验证和获取
         $params = $this->validateParams([
             [['key', 'id'], 'required'],
-            ['key', 'exist', 'label' => '区块标记', 'targetClass' => BlockCategory::class, 'targetAttribute' => 'key'],
-            ['id', 'exist', 'label' => 'ID', 'targetClass' => BlockOption::class, 'targetAttribute' => 'id'],
+            ['key', 'exist', 'label' => '表单标记', 'targetClass' => FormCategory::class, 'targetAttribute' => 'key'],
+            ['id', 'exist', 'label' => 'ID', 'targetClass' => FormOption::class, 'targetAttribute' => 'id'],
         ]);
         // 业务处理
         $res = $this->service->view($params);
@@ -167,7 +174,7 @@ class BlockOptionController extends RestController
         // 参数验证和获取
         $params = $this->validateParams([
             [['key'], 'required'],
-            ['key', 'exist', 'label' => '区块标记', 'targetClass' => BlockCategory::class, 'targetAttribute' => 'key'],
+            ['key', 'exist', 'label' => '表单标记', 'targetClass' => FormCategory::class, 'targetAttribute' => 'key'],
         ]);
         // 业务处理
         $res = $this->service->refreshOrder($params);
@@ -186,8 +193,8 @@ class BlockOptionController extends RestController
         // 参数验证和获取
         $params = $this->validateParams([
             [['key', 'id'], 'required'],
-            ['key', 'exist', 'label' => '区块标记', 'targetClass' => BlockCategory::class, 'targetAttribute' => 'key'],
-            ['id', 'exist', 'label' => 'ID', 'targetClass' => BlockOption::class, 'targetAttribute' => 'id'],
+            ['key', 'exist', 'label' => '表单标记', 'targetClass' => FormCategory::class, 'targetAttribute' => 'key'],
+            ['id', 'exist', 'label' => 'ID', 'targetClass' => FormOption::class, 'targetAttribute' => 'id'],
         ]);
         // 业务处理
         $res = $this->service->orderUp($params);
@@ -206,8 +213,8 @@ class BlockOptionController extends RestController
         // 参数验证和获取
         $params = $this->validateParams([
             [['key', 'id'], 'required'],
-            ['key', 'exist', 'label' => '区块标记', 'targetClass' => BlockCategory::class, 'targetAttribute' => 'key'],
-            ['id', 'exist', 'label' => 'ID', 'targetClass' => BlockOption::class, 'targetAttribute' => 'id'],
+            ['key', 'exist', 'label' => '表单标记', 'targetClass' => FormCategory::class, 'targetAttribute' => 'key'],
+            ['id', 'exist', 'label' => 'ID', 'targetClass' => FormOption::class, 'targetAttribute' => 'id'],
         ]);
         // 业务处理
         $res = $this->service->orderDown($params);
