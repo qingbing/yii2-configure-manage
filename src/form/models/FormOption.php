@@ -2,8 +2,6 @@
 
 namespace YiiConfigureManage\form\models;
 
-
-//use YiiConfigure\form\logic\FormSetting as FormSettingLogic;
 use YiiConfigureManage\components\BusinessModel;
 use YiiHelper\helpers\AppHelper;
 
@@ -99,10 +97,6 @@ class FormOption extends BusinessModel
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        if ($this->category->is_setting) {
-            // 如果是配置，删除保存的配置值信息
-            AppHelper::app()->cacheHelper->delete(FormSettingLogic::getInstance($this->key)->getCacheKey());
-        }
     }
 
     /**

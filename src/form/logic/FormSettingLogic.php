@@ -46,10 +46,6 @@ class FormSettingLogic
      * @var FormSetting
      */
     protected $setting;
-    /**
-     * @var string
-     */
-    private $_cacheKey;
 
     /**
      * 获取配置表单实例
