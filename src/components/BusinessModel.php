@@ -26,6 +26,9 @@ class BusinessModel extends Model
      */
     public static function getDb()
     {
-        return Yii::$app->get('db_business');
+        if (Yii::$app->has('db_business')) {
+            return Yii::$app->get('db_business');
+        }
+        return Yii::$app->getDb();
     }
 }
