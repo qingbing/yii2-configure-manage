@@ -14,6 +14,7 @@ use YiiHelper\helpers\AppHelper;
  * @property string $label 字段名
  * @property string $input_type 表单类型
  * @property string $default 默认值
+ * @property string $placeholder 提示信息
  * @property string $description 分类配置描述
  * @property int $sort_order 当前分类排序
  * @property int $is_enable 表单项目启用状态
@@ -46,7 +47,7 @@ class FormOption extends BusinessModel
             [['input_type'], 'string'],
             [['sort_order', 'is_enable', 'is_required'], 'integer'],
             [['exts', 'rules', 'created_at', 'updated_at'], 'safe'],
-            [['key', 'field', 'label', 'default'], 'string', 'max' => 100],
+            [['key', 'field', 'label', 'default', 'placeholder'], 'string', 'max' => 100],
             [['description'], 'string', 'max' => 255],
             [['required_msg'], 'string', 'max' => 200],
             [['field', 'key'], 'unique', 'targetAttribute' => ['field', 'key']],
@@ -66,6 +67,7 @@ class FormOption extends BusinessModel
             'label'        => '字段名',
             'input_type'   => '表单类型',
             'default'      => '默认值',
+            'placeholder'  => '提示信息',
             'description'  => '分类配置描述',
             'sort_order'   => '当前分类排序',
             'is_enable'    => '表单项目启用状态',

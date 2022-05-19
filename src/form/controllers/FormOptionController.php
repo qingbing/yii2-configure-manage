@@ -66,6 +66,7 @@ class FormOptionController extends RestController
             ['label', 'unique', 'label' => '选项名称', 'targetClass' => FormOption::class, 'targetAttribute' => 'label', 'filter' => ['key' => $key]],
             ['input_type', 'in', 'label' => '对齐方式', 'range' => array_keys(FormOption::inputTypes())],
             ['default', 'string', 'label' => '默认值'],
+            ['placeholder', 'string', 'label' => '提示信息'],
             ['description', 'string', 'label' => '表单选项描述'],
             ['required_msg', 'string', 'label' => '必填提示'],
             ['sort_order', 'integer', 'label' => '排序'],
@@ -109,6 +110,7 @@ class FormOptionController extends RestController
                 ]
             ],
             ['default', 'string', 'label' => '默认值'],
+            ['placeholder', 'string', 'label' => '提示信息'],
             ['description', 'string', 'label' => '表单选项描述'],
             ['required_msg', 'string', 'label' => '必填提示'],
             ['sort_order', 'integer', 'label' => '排序'],

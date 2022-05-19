@@ -27,6 +27,7 @@ CREATE TABLE `{{%form_option}}` (
   `label` varchar(100) NOT NULL COMMENT '字段名',
   `input_type` enum('view-text','input-text','input-password','input-area','input-number','input-radio','input-checkbox','input-select','ele-switch','ele-cascader','ele-slider','ele-rate','ele-color','ele-uploader','time-picker','date-picker','auto-complete','json-editor','vue-editor') NOT NULL DEFAULT 'input-text' COMMENT '表单类型',
   `default` varchar(100) NOT NULL DEFAULT '' COMMENT '默认值',
+  `placeholder` varchar(100) NOT NULL DEFAULT '' COMMENT '提示信息',
   `description` varchar(255) NOT NULL DEFAULT '' COMMENT '分类配置描述',
   `sort_order` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '当前分类排序',
   `is_enable` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '表单项目启用状态',
