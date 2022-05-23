@@ -18,6 +18,7 @@ use YiiHelper\behaviors\UidBehavior;
  * @property string $fixed 列固定:[left,right,""]
  * @property string $default 默认值,当字段没有是返回，基本无用
  * @property string $align 表格内容对齐方式:[center,left,right]
+ * @property int $is_image 是否图片列表
  * @property int $is_tooltip 当内容过长被隐藏时显示 tooltip
  * @property int $is_resizable 对应列是否可以通过拖动改变宽度
  * @property int $is_editable 当为编辑表格时，字段是否可在table中编辑
@@ -51,7 +52,7 @@ class HeaderOption extends BusinessModel
     {
         return [
             [['key', 'field', 'label'], 'required'],
-            [['is_tooltip', 'is_resizable', 'is_editable', 'sort_order', 'is_required', 'is_default', 'is_enable', 'operate_uid'], 'integer'],
+            [['is_image', 'is_tooltip', 'is_resizable', 'is_editable', 'sort_order', 'is_required', 'is_default', 'is_enable', 'operate_uid'], 'integer'],
             [['options', 'params', 'created_at', 'updated_at'], 'safe'],
             [['key', 'default'], 'string', 'max' => 100],
             [['field', 'component'], 'string', 'max' => 60],
@@ -78,6 +79,7 @@ class HeaderOption extends BusinessModel
             'fixed'        => '列固定',
             'default'      => '默认值',
             'align'        => '对齐方式',
+            'is_image'     => '图片列表',
             'is_tooltip'   => '使用tooltip',
             'is_resizable' => '开启拖动',
             'is_editable'  => '表格编辑',

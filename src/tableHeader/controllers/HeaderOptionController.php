@@ -16,6 +16,7 @@ use YiiConfigureManage\tableHeader\services\HeaderOptionService;
 use YiiHelper\abstracts\RestController;
 use YiiHelper\validators\JsonValidator;
 use Zf\Helper\Traits\Models\TLabelEnable;
+use Zf\Helper\Traits\Models\TLabelYesNo;
 
 /**
  * 控制器: 表头选项管理
@@ -70,9 +71,10 @@ class HeaderOptionController extends RestController
             ['component', 'string', 'label' => '组件名'], // 除了程序员（超管），其它人不能修改和查看，因为需要前端代码配合
             ['fixed', 'in', 'label' => '固定方向', 'range' => array_keys(HeaderOption::fixedTypes())],
             ['align', 'in', 'label' => '对齐方式', 'range' => array_keys(HeaderOption::alignTypes())],
-            ['is_tooltip', 'boolean', 'label' => '使用tooltip'],
-            ['is_editable', 'boolean', 'label' => '表格编辑'],
-            ['is_resizable', 'boolean', 'label' => '拖动宽度'],
+            ['is_image', 'in', 'label' => '图片列表', 'range' => array_keys(TLabelYesNo::yesNoLabels())],
+            ['is_tooltip', 'in', 'label' => '过长隐藏', 'range' => array_keys(TLabelEnable::enableLabels())],
+            ['is_editable', 'in', 'label' => '表格编辑', 'range' => array_keys(TLabelEnable::enableLabels())],
+            ['is_resizable', 'in', 'label' => '拖动宽度', 'range' => array_keys(TLabelEnable::enableLabels())],
             ['options', JsonValidator::class, 'label' => '映射关系'],
             ['params', JsonValidator::class, 'label' => '参数内容'],
             ['description', 'string', 'label' => '表头选项描述'],

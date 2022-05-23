@@ -25,6 +25,7 @@ CREATE TABLE `{{%header_option}}` (
   `fixed` varchar(20) NOT NULL DEFAULT '' COMMENT '列固定:[left,right,""]',
   `default` varchar(100) NOT NULL DEFAULT ' - ' COMMENT '默认值,当字段没有是返回，基本无用',
   `align` varchar(20) NOT NULL DEFAULT 'center' COMMENT '表格内容对齐方式:[center,left,right]',
+  `is_image` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否图片列表',
   `is_tooltip` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '当内容过长被隐藏时显示 tooltip',
   `is_resizable` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '对应列是否可以通过拖动改变宽度',
   `is_editable` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '当为编辑表格时，字段是否可在table中编辑',
