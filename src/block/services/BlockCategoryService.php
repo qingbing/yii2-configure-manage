@@ -56,6 +56,16 @@ class BlockCategoryService extends Service implements IBlockCategoryService
     }
 
     /**
+     * 链接类型列表
+     *
+     * @return array
+     */
+    public function linkTypes(): array
+    {
+        return BlockCategory::LINK_TYPES;
+    }
+
+    /**
      * 区块类型列表
      *
      * @param array|null $params

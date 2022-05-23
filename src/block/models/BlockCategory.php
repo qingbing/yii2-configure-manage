@@ -116,12 +116,22 @@ class BlockCategory extends BusinessModel
     ];
 
     /**
-     * 支持选项的类型
+     * 图片类型
      */
     const IMAGE_TYPES = [
-        self::TYPE_IMAGE             => '图片',
+        self::TYPE_IMAGE        => '图片',
+        self::TYPE_IMAGE_LINK   => '链接图片',
+        self::TYPE_IMAGES       => '图片集',
+        self::TYPE_IMAGES_LINKS => '链接图片集',
+    ];
+
+    /**
+     * 连接类型
+     */
+    const LINK_TYPES = [
         self::TYPE_IMAGE_LINK        => '链接图片',
-        self::TYPE_IMAGES            => '图片集',
+        self::TYPE_CLOUD_WORDS_LINKS => '链接云词',
+        self::TYPE_LIST_LINKS        => '链接列表',
         self::TYPE_IMAGES_LINKS      => '链接图片集',
     ];
 

@@ -55,6 +55,19 @@ class BlockCategoryController extends RestController
     }
 
     /**
+     * 链接类型列表
+     *
+     * @return array
+     */
+    public function actionLinkTypes(): array
+    {
+        // 业务处理
+        $res = $this->service->linkTypes();
+        // 渲染结果
+        return $this->success($res, '链接类型列表');
+    }
+
+    /**
      * 支持选项的类型列表
      *
      * @return array

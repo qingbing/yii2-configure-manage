@@ -39,4 +39,11 @@ interface IBlockCategoryService extends ICurdService
      * @return array
      */
     public function imageTypes(): array;
+
+    /**
+     * 链接类型列表
+     *
+     * @return array
+     */
+    public function linkTypes(): array;
 }
