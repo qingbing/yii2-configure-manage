@@ -28,6 +28,46 @@ class BlockCategoryController extends RestController
     public $serviceClass     = BlockCategoryService::class;
 
     /**
+     * 区块类型map
+     *
+     * @param array|null $params
+     * @return array
+     */
+    public function actionTypeMap(): array
+    {
+        // 业务处理
+        $res = $this->service->typeMap();
+        // 渲染结果
+        return $this->success($res, '区块类型列表');
+    }
+
+    /**
+     * 图片类型列表
+     *
+     * @return array
+     */
+    public function actionImageTypes(): array
+    {
+        // 业务处理
+        $res = $this->service->imageTypes();
+        // 渲染结果
+        return $this->success($res, '图片类型列表');
+    }
+
+    /**
+     * 支持选项的类型列表
+     *
+     * @return array
+     */
+    public function actionListTypes(): array
+    {
+        // 业务处理
+        $res = $this->service->listTypes();
+        // 渲染结果
+        return $this->success($res, '支持选项的类型列表');
+    }
+
+    /**
      * 区块类型列表
      *
      * @return array

@@ -10,7 +10,7 @@ use Zf\Helper\Exceptions\BusinessException;
  * This is the model class for table "{{%block_category}}".
  *
  * @property string $key 引用标识
- * @property string $type 页面区块类型[content, image-link, cloud-words, cloud-words-links, list, list-links, images, image-links]
+ * @property string $type 页面区块类型[content, image, image-link, cloud-words, cloud-words-links, list, list-links, images, image-links]
  * @property string $name 区块名称
  * @property string $description 区块描述
  * @property int $sort_order 排序
@@ -74,6 +74,7 @@ class BlockCategory extends BusinessModel
     }
 
     const TYPE_CONTENT           = 'content';
+    const TYPE_IMAGE             = 'image';
     const TYPE_IMAGE_LINK        = 'image-link';
     const TYPE_CLOUD_WORDS       = 'cloud-words';
     const TYPE_CLOUD_WORDS_LINKS = 'cloud-words-links';
@@ -87,11 +88,12 @@ class BlockCategory extends BusinessModel
      *
      * @return array
      */
-    static public function types()
+    public static function types()
     {
         return [
             self::TYPE_CONTENT           => '内容',
-            self::TYPE_IMAGE_LINK        => '图片',
+            self::TYPE_IMAGE             => '图片',
+            self::TYPE_IMAGE_LINK        => '链接图片',
             self::TYPE_CLOUD_WORDS       => '云词',
             self::TYPE_CLOUD_WORDS_LINKS => '链接云词',
             self::TYPE_LIST              => '列表',
@@ -102,6 +104,28 @@ class BlockCategory extends BusinessModel
     }
 
     /**
+     * 支持选项的类型
+     */
+    const LIST_TYPES = [
+        self::TYPE_CLOUD_WORDS       => '云词',
+        self::TYPE_CLOUD_WORDS_LINKS => '链接云词',
+        self::TYPE_LIST              => '列表',
+        self::TYPE_LIST_LINKS        => '链接列表',
+        self::TYPE_IMAGES            => '图片集',
+        self::TYPE_IMAGES_LINKS      => '链接图片集',
+    ];
+
+    /**
+     * 支持选项的类型
+     */
+    const IMAGE_TYPES = [
+        self::TYPE_IMAGE             => '图片',
+        self::TYPE_IMAGE_LINK        => '链接图片',
+        self::TYPE_IMAGES            => '图片集',
+        self::TYPE_IMAGES_LINKS      => '链接图片集',
+    ];
+
+    /**
      * 保存前执行
      *
      * @param bool $insert
@@ -109,8 +133,24 @@ class BlockCategory extends BusinessModel
      */
     public function beforeSave($insert)
     {
-        if ($this->type != self::TYPE_IMAGE_LINK) {
-            $this->src = '';
+        switch ($this->type) {
+            case self::TYPE_CONTENT          :
+                $this->src = "";
+                break;
+            case self::TYPE_IMAGE            :
+                $this->content = "";
+                break;
+            case self::TYPE_IMAGE_LINK       :
+                break;
+            case self::TYPE_CLOUD_WORDS      :
+            case self::TYPE_CLOUD_WORDS_LINKS:
+            case self::TYPE_LIST             :
+            case self::TYPE_LIST_LINKS       :
+            case self::TYPE_IMAGES           :
+            case self::TYPE_IMAGES_LINKS     :
+                $this->src     = "";
+                $this->content = "";
+                break;
         }
         return parent::beforeSave($insert);
     }
@@ -164,5 +204,15 @@ class BlockCategory extends BusinessModel
         $fields                = parent::fields();
         $fields['optionCount'] = 'optionCount';
         return $fields;
+    }
+
+    /**
+     * 判断当前区块能否支持列表选项
+     *
+     * @return bool
+     */
+    public function isSupportList()
+    {
+        return isset(self::LIST_TYPES[$this->type]) && self::LIST_TYPES[$this->type];
     }
 }

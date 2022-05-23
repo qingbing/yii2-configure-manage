@@ -25,6 +25,37 @@ use Zf\Helper\Exceptions\ForbiddenHttpException;
 class BlockCategoryService extends Service implements IBlockCategoryService
 {
     /**
+     * 区块类型map
+     *
+     * @param array|null $params
+     * @return array
+     */
+    public function typeMap(): array
+    {
+        return BlockCategory::types();
+    }
+
+    /**
+     * 区块类型对选项的支持列表
+     *
+     * @return array
+     */
+    public function listTypes(): array
+    {
+        return BlockCategory::LIST_TYPES;
+    }
+
+    /**
+     * 图片类型列表
+     *
+     * @return array
+     */
+    public function imageTypes(): array
+    {
+        return BlockCategory::IMAGE_TYPES;
+    }
+
+    /**
      * 区块类型列表
      *
      * @param array|null $params

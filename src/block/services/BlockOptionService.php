@@ -47,6 +47,7 @@ class BlockOptionService extends Service implements IBlockOptionService
         }
         if (in_array($this->category->type, [
             BlockCategory::TYPE_CONTENT,
+            BlockCategory::TYPE_IMAGE,
             BlockCategory::TYPE_IMAGE_LINK,
         ])) {
             throw new BusinessException("区块({$this->category->name})不能设置子选项");
